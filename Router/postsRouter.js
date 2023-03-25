@@ -55,7 +55,7 @@ router.delete("/post", async(req, res)=>{
 
     router.delete("/post/:id", async(req, res)=>{
         try{
-            const data = await postModels.deleteOne({userId:req.params.id})
+            const data = await postModels.deleteOne({_id:req.params.id})
             res.status(203).json({
                 message:"All Data deleted"
             })
