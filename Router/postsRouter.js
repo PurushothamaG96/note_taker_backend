@@ -51,6 +51,20 @@ router.delete("/post", async(req, res)=>{
             error:"Internal server issue"
         })
     }
+})
+
+    router.delete("/post/:id", async(req, res)=>{
+        try{
+            const data = await postModels.deleteOne({userId:req.params.id})
+            res.status(203).json({
+                message:"All Data deleted"
+            })
+        }
+        catch(e){
+            res.status(500).json({
+                error:"Internal server issue"
+            })
+        }
     
     
 })

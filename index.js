@@ -40,6 +40,22 @@ app.use("/v1/post", (req, res, next)=>{
     })
 })
 
+app.use("/v1/post/:id", (req, res, next)=>{
+    
+    jwt.verify(req.headers.authorization, "secret", (err, result)=>{
+        if(err){
+            res.status(401).json({
+                message:"unAuthorized",
+                err
+            })
+        }
+        else{
+            req.user = result.data
+            next()
+        }
+    })
+})
+
 app.use("/v1", postRouter)
 app.use("/v1", register)
 app.use("/v1", login)
