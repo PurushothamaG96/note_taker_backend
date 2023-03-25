@@ -2,6 +2,9 @@ const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
 const cors = require("cors")
+const jwt = require("jsonwebtoken")
+
+const postRouter = require("./Router/postsRouter")
 
 const register = require("./Router/register")
 const login = require("./Router/login")
@@ -21,6 +24,23 @@ const main = async()=>{
 main()
 app.use(cors())
 
+app.use("/v1/post", (req, res, next)=>{
+    
+    jwt.verify(req.headers.authorization, "secret", (err, result)=>{
+        if(err){
+            res.status(401).json({
+                message:"unAuthorized",
+                err
+            })
+        }
+        else{
+            req.user = result.data
+            next()
+        }
+    })
+})
+
+app.use("/v1", postRouter)
 app.use("/v1", register)
 app.use("/v1", login)
 app.get("/v1", (req, res)=>{
