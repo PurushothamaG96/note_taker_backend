@@ -68,4 +68,27 @@ router.delete("/post", async(req, res)=>{
     
     
 })
+
+
+router.get("/post/:id", async(req, res)=>{
+    console.log(req.user)
+    const search = `\^${req.params.id}`
+    try{
+        const data = await postModels.find({title:{$regex:search, $option:"i"}})
+        console.log(data)
+        res.status(200).json({
+            data
+        })
+    }
+    catch(e){
+        res.status(500).json({
+            error:"Internal server issue"
+        })
+    }
+
+
+})
+
+
+
 module.exports = router;
